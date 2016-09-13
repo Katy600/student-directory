@@ -1,23 +1,29 @@
-
-
 def input_students
+ 
 	puts "Please enter the names of the students"
 	puts "To finish, just hit return twice"
-
 	#create an empty array
-	students = [ ]
+	students = []
 	#get the first name
+	loop do
+	puts "What is the next students name?"
 	name = gets.chomp
-	# while the name is not empty, repeat this code
-	while !name.empty? do 
-		#add the student hash to the array
-		students << {name: name, cohort: :november}
-		puts "Now we have #{students.count} students"
-		# get another name from the user
-		name = gets.chomp
+	if name.empty?
+		break
 	end
-	#return the array of students
-	students
+
+	puts "What is their hobby?"
+	hobby = gets.chomp
+
+	puts "What is their country of origin?"
+	country = gets.chomp
+
+	
+		students << {name: name, cohort: :november, hobbies: hobby, country_of_birth: country}
+		puts "Now we have #{students.count} students"
+	end
+	
+	return students
 end
 
 def print_header
@@ -27,26 +33,15 @@ end
 
 def print(students)
 		students.each_with_index do |student, index|
-		index = index + 1
-		while student[:name].length < 12
-		puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
-		break
-		end
-	 end
+		puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort. They enjoy #{student[:hobbies]} in their spare time and they come from #{student[:country_of_birth]}"
+	end
 end
 
 def print_footer(students)
 	puts "Overall, we have #{students.count} great students"
 end
-
 #nothing happens until we call the methods
 students = input_students
 print_header
 print(students)
 print_footer(students)
-
-
-
-
-
-
