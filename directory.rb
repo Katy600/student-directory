@@ -1,9 +1,11 @@
+
+
 def input_students
 	puts "Please enter the names of the students"
 	puts "To finish, just hit return twice"
 
 	#create an empty array
-	students = []
+	students = [ ]
 	#get the first name
 	name = gets.chomp
 	# while the name is not empty, repeat this code
@@ -20,18 +22,18 @@ end
 
 
 def print_header
-	puts "The students of Villains Academy"
+	puts "The students of my cohort at Makers Academy"
 	puts "--------------"
 end
 
 def print(students)
-	students.each do |student|
-		puts "#{student[:name]} (#{student[:cohort]} cohort)"
+	students.each_with_index do |student, index|
+		puts "#{index} #{student[:name]} (#{student[:cohort]} cohort)"
 	end
 end
 
 def print_footer(students)
-	puts "Overall, we have #{students.count} great students\n"
+	prints "Overall, we have #{students.count} great students\n"
 end
 
 #nothing happens until we call the methods
