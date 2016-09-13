@@ -20,20 +20,23 @@ def input_students
 	students
 end
 
-
 def print_header
 	puts "The students of my cohort at Makers Academy"
 	puts "--------------"
 end
 
 def print(students)
-	students.each_with_index do |student, index|
-		puts "#{index} #{student[:name]} (#{student[:cohort]} cohort)"
-	end
+		students.each_with_index do |student, index|
+		index = index + 1
+		
+		if student[:name].downcase.start_with? "g"
+		puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+		end
+	 end
 end
 
 def print_footer(students)
-	prints "Overall, we have #{students.count} great students\n"
+	puts "Overall, we have #{students.count} great students"
 end
 
 #nothing happens until we call the methods
