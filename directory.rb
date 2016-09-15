@@ -7,7 +7,7 @@ def input_students
 
   loop do
     print "Please enter the name of the student: "
-    name = gets.chomp
+    name = gets[0...-1]
     if name.empty?
       break
     end
