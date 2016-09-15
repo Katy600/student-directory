@@ -1,116 +1,134 @@
-
-MONTHS = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 def input_students
-	puts
- 
-	puts "Please enter the names of the students".center(50)
-	puts "To finish, just hit return twice".center(50)
+  months = ["january", "february", "march", "april", "may", "june", 
+            "july", "august", "september", "october", "november", "december"]
 
-students = []
+  puts "to finish, just hit return twice"
+  students = []
 
+  loop do
+    print "Please enter the name of the student: "
+    name = gets.chomp
+    if name.empty?
+      break
+    end
 
-	loop do 
+    print "What cohort should I add #{name} to?: "
+    cohort = gets.chomp
 
-		puts "Enter the students name.".center(50)
+    if cohort == ""
+      cohort = "november"
+    end
 
-		name = gets.chomp
+    if cohort != ""
 
-		break if name.empty?
+      until months.any? {|month| cohort == month} 
+        puts "please enter a valid month"
+        cohort = gets.chomp
+      end
 
-		puts "What cohort are they on?".center(50)
-
-		month = gets.chomp
-			if month == ""
-			   month = "(no month has been entered)"
-				else
-				
-				until MONTHS.any?{|valid_month| month == valid_month} 
-
-				puts "Incorrect spell. Please try again".center(50)
-
-				month = gets.chomp
-				end
-
-			end
-
-		puts "What is their hobby?".center(50)
-
-		hobby = gets.chomp
-			if hobby == ""
-			   hobby = "(no hobbies entered)"
-			end
-
-		puts "What country are they from?".center(50)
-
-		country = gets.chomp
-			if country == ""
-				country = "(no country entered)"
-				
-			end
+    end
 
 
-		students << {name: name.to_sym, cohort: month.to_sym, hobby: hobby.to_sym, country: country.to_sym}
 
+    print "What are #{name}'s hobbies?: "
+    hobbies = gets.chomp
+    print "What is #{name}'s country of birth? "
+    country = gets.chomp
 
-		end 
+    students << {name: name, cohort: cohort.to_sym, hobbies: hobbies, country: country}
+    if students.count == 1
+      puts "Now we have #{students.count} student".center(100)
+      puts ""
+    else
+      puts "Now we have #{students.count} students".center(100)
+      puts ""
+    end
+  end
 
-students
+  return students
 
 end
 
-#students = [{name: "K", cohort: "September", hobby: "swimming", country: "France"}, {name: "J", cohort: "July".to_sym, hobby: "eating", country: "Belgium"}]
 
-def group_in_cohort(students)
-	puts "What cohort would you like to look at?"
-
-	sorted_array = []
-
-	cohort = gets.chomp.to_sym
-
-	selected_student = students.find {|student| student[:cohort] == cohort }
-
-	 sorted_array << selected_student
-
-	 return sorted_array
-end 
-
-	
-def print_header
-	puts "The students of my cohort at Makers Academy".center(50)
-	puts "--------------".center(50)
+def output_header(students)
+  if students.count == 0
+    puts "There are no students yet".center(100)
+  else
+    puts "The students of Makers Academy".center(100)
+    puts "-------------".center(100)
+  end
 end
 
-def print(students)
-		students.each_with_index do |student, index|
-		puts "#{index + 1}. #{student[:name]} is on the #{student[:cohort]} cohort. They enjoy #{student[:hobby]} in their spare time and they come from #{student[:country]}.".center(50)
-	end
+def output(students)
+  students.each_with_index {|student, index|
+    if student[:name].length < 12
+      puts "#{index + 1}. #{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort.".center(100)
+      if student[:hobbies] != ""
+        puts "#{student[:name]} likes to #{student[:hobbies]}".center(100)
+        puts ""
+      end
+    end
+  }
 end
 
-def print_footer(students)
-
-	if students.count > 1
-
-	puts "Overall, we have #{students.count} great students".center(50)
-
-
-	elsif students.count == 1
-
-		puts "Overall, we have 1 great student".center(50)
-
-	else
-
-		puts "No students have been entered"
-
-	end 
+def output_footer(students)
+  if students.count == 0
+    puts ""
+  elsif students.count == 1
+    puts "Overall, we have #{students.count} great student!".center(100)
+  else
+  puts "Overall, we have #{students.count} great students!".center(100)
+  end
 end
-#nothing happens until we call the methods
+
+def select_cohort(students)
+  print "what cohort would you like to select? "
+  month = gets.chomp.downcase.to_sym
+  selected_cohort = students.select {|student|
+   if student[:cohort] == month
+      puts ""
+      puts "#{student[:name]}: #{student[:cohort]} cohort".center(100)
+   end
+  }
+  return selected_cohort
+end
+
+def student_finder(students)
+  print "What is the first letter of the student's name?: "
+  letter = gets.chomp.downcase
+  selected_students = students.select { |student|
+    if student[:name][0] == letter
+      puts ""
+      puts "#{student[:name]}: #{student[:cohort]} cohort".center(100)
+    end
+  }
+  return selected_students
+end
 
 
 students = input_students
-print_header
-print(students)
-print_footer(students)
-cohort = group_in_cohort(students)
-print(cohort)
-#group_in_cohort(students)
+puts ""
+puts ""
 
+output_header(students)
+
+output(students)
+puts ""
+
+output_footer(students)
+puts ""
+
+if students.count > 0
+  puts "Would you like to search by cohort name?"
+  answer = gets.chomp
+  if answer == "yes"
+    select_cohort(students)
+  end
+end
+
+if students.count > 0
+  puts "Would you like to search for a student by name?"
+  answer = gets.chomp
+    if answer == "yes"
+    student_finder(students)
+    end
