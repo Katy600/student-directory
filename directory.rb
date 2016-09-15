@@ -1,6 +1,4 @@
 
-
-
 MONTHS = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 def input_students
 	puts
@@ -89,7 +87,21 @@ def print(students)
 end
 
 def print_footer(students)
+
+	if students.count > 1
+
 	puts "Overall, we have #{students.count} great students".center(50)
+
+
+	elsif students.count == 1
+
+		puts "Overall, we have 1 great student".center(50)
+
+	else
+
+		puts "No students have been entered"
+
+	end 
 end
 #nothing happens until we call the methods
 
