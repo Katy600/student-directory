@@ -8,7 +8,8 @@ def input_students
   print "Please enter the name of the student: "
   puts "To finish, just hit return twice"
 
-  loop do   
+  loop do  
+  puts "Add another student" 
     name = gets[0...-1]
       if name.empty?
         break
@@ -55,6 +56,8 @@ end
 def print_menue
     puts "1. Input the students"
     puts "2. Show the students"
+    puts "3. Save the list to students.csv"
+    puts "4. Load the list to students.csv"
     puts "9. Exit"
   end
 
@@ -72,6 +75,8 @@ case selection
       when "2"
         #show the students
         show_students
+      when "3"
+        save_students
       when "9"
         exit #this will cause the program to terminate
       else
@@ -133,23 +138,27 @@ def student_finder
   }
   return selected_students
 end
-=begin
-if students.count > 0
-  puts "Would you like to search by cohort name?"
-  answer = gets.chomp
-  if answer == "yes"
-    select_cohort(students)
+
+def save_students
+  # open the file for writing.
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students.each do | student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
   end
+  file.close
 end
 
-if students.count > 0
-  puts "Would you like to search for a student by name?"
-  answer = gets.chomp
-  if answer == "yes"
-  student_finder(students)
-  end
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym}
+  end 
+  file.close
 end
 
-=end
 
 interactive_menu
