@@ -1,3 +1,43 @@
+def interactive_menu
+
+  students = []
+
+    loop do 
+      #1. print the menu and ask the user what to do.
+      puts "1. Input the students"
+      puts "2. Show the students"
+      puts "9. Exit"
+
+      #2. read the input and save it into a variable
+      selection = gets.chomp
+    
+    #3. do what the user has asked
+      case selection
+      when "1"
+        #input the students
+        students = input_students
+        puts ""
+        puts ""
+
+      when "2"
+        #show the students
+        output_header(students)
+
+        output(students)
+        puts ""
+
+        output_footer(students)
+        puts ""
+
+      when "9"
+        exit #this will cause the program to terminate
+      else
+        puts "I don't know what you meant, try again"
+        
+      end
+   end
+end
+
 def input_students
   months = ["january", "february", "march", "april", "may", "june", 
             "july", "august", "september", "october", "november", "december"]
@@ -104,20 +144,7 @@ def student_finder(students)
   }
   return selected_students
 end
-
-
-students = input_students
-puts ""
-puts ""
-
-output_header(students)
-
-output(students)
-puts ""
-
-output_footer(students)
-puts ""
-
+=begin
 if students.count > 0
   puts "Would you like to search by cohort name?"
   answer = gets.chomp
@@ -129,6 +156,11 @@ end
 if students.count > 0
   puts "Would you like to search for a student by name?"
   answer = gets.chomp
-    if answer == "yes"
-    student_finder(students)
-    end
+  if answer == "yes"
+  student_finder(students)
+  end
+end
+
+=end
+
+interactive_menu
