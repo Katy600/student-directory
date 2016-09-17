@@ -19,7 +19,7 @@ end
 def process(selection)
 case selection
       when "1"
-      input_students
+        input_students
       when "2"
         show_students
       when "3"
@@ -66,7 +66,7 @@ loop do
       print "What is #{name}'s country of birth? "
       country = STDIN.gets.chomp
 
-      add_students
+      add_students(name, cohort)
       
       if @students.count == 1
         puts "Now we have #{@students.count} student".center(100)
@@ -155,7 +155,7 @@ def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
-   add_students
+   add_students(name, cohort)
   end 
   file.close
 end
@@ -172,8 +172,8 @@ def try_load_students
   end
 end
 
-def add_students
-  @students << {name: name, cohort: cohort.to_sym}  
+def add_students(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
 end
 
 try_load_students
