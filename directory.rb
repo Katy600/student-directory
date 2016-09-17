@@ -1,19 +1,19 @@
 
 @students = []
 
-def print_menue
+def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
     puts "3. Save the list to students.csv"
     puts "4. Load the list to students.csv"
     puts "9. Exit"
-  end
+end
 
 def interactive_menu
     loop do 
-      print_menue
+      print_menu
       process(STDIN.gets.chomp)
-   end
+    end
 end
 
 def process(selection)
@@ -30,7 +30,7 @@ case selection
         exit #this will cause the program to terminate
       else
         puts "I don't know what you meant, try again"
-   end
+    end
  end 
 
 def input_students
@@ -40,7 +40,7 @@ def input_students
   puts "Please enter the name of the student: "
   puts "To finish, just hit return twice"
 
-loop do  
+ loop do  
   puts "Add another student" 
     name = STDIN.gets[0...-1]
       if name.empty?
@@ -55,10 +55,10 @@ loop do
       end
 
       if cohort != ""
-        until months.any? {|month| cohort == month} 
+        until months.any? {|month| cohort == month 
           puts "please enter a valid month"
           cohort = STDIN.gets.chomp
-        end
+         }
       end
 
       print "What are #{name}'s hobbies?: "
@@ -66,7 +66,7 @@ loop do
       print "What is #{name}'s country of birth? "
       country = STDIN.gets.chomp
 
-      add_students(name, cohort)
+      add_students(name, cohort, hobbies, country)
       
       if @students.count == 1
         puts "Now we have #{@students.count} student".center(100)
@@ -74,15 +74,16 @@ loop do
       else
         puts "Now we have #{@students.count} students".center(100)
         puts ""
+      end
     end
   end
-end
+end 
 
 def show_students
       output_header
       output
       output_footer
-  end
+end
 
 def output_header
   if @students.count == 0
@@ -107,7 +108,7 @@ end
 
 def output_footer
   if @students.count == 0
-    puts ""
+    puts "There are no students registered"
   elsif @students.count == 1
     puts "Overall, we have #{@students.count} great student!".center(100)
   else
@@ -117,7 +118,7 @@ end
 
 def select_cohort
   print "what cohort would you like to select? "
-  month = gets.chomp.downcase.to_sym
+  month = STDIN.gets.chomp.downcase.to_sym
   selected_cohort = @students.select {|student|
    if student[:cohort] == month
       puts ""
@@ -129,7 +130,7 @@ end
 
 def student_finder
   print "What is the first letter of the student's name?: "
-  letter = gets.chomp.downcase
+  letter = STDIN.gets.chomp.downcase
   selected_students = @students.select { |student|
     if student[:name][0] == letter
       puts ""
@@ -144,7 +145,7 @@ def save_students
   file = File.open("students.csv", "w")
   # iterate over the array of students
   @students.each do | student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], student[:cohort], student[:hobbies], student[:country]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
@@ -154,15 +155,17 @@ end
 def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
-   add_students(name, cohort)
+  name, cohort, hobbies, country = line.chomp.split(',')
+  add_students(name, cohort, hobbies, country)
   end 
   file.close
 end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
+  if filename.nil?
+  filename = "students.csv" # get out of the method if it isn't given
+  end
   if File.exists?(filename) # if it exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
@@ -172,8 +175,8 @@ def try_load_students
   end
 end
 
-def add_students(name, cohort)
-  @students << {name: name, cohort: cohort.to_sym}
+def add_students(name, cohort, hobbies, country)
+  @students << {name: name, cohort: cohort.to_sym, hobbies: hobbies, country: country}
 end
 
 try_load_students
