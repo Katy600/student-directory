@@ -51,7 +51,7 @@ def input_students
       cohort = STDIN.gets.chomp
 
       if cohort == ""
-         cohort = "november"
+         cohort = "(none listed)"
       end
 
       if cohort != ""
@@ -63,8 +63,17 @@ def input_students
 
       print "What are #{name}'s hobbies?: "
       hobbies = STDIN.gets.chomp
+
+      if hobbies == ""
+        hobbies= "(none listed)"
+      end
+
       print "What is #{name}'s country of birth? "
       country = STDIN.gets.chomp
+
+      if country == ""
+        country = "(none listed)"
+      end
 
       add_students(name, cohort, hobbies, country)
       
