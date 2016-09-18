@@ -164,24 +164,26 @@ def student_finder
 end
 
 def save_students
+  puts
+  puts "What "
   # open the file for writing.
-  file = File.open("students.csv", "w")
-  # iterate over the array of students
-  @students.each do | student|
+  file = File.open("students.csv", "w") do |file|
+    @students.each do | student|
     student_data = [student[:name], student[:cohort], student[:hobbies], student[:country]]
     csv_line = student_data.join(",")
     file.puts csv_line
+    end
   end
-  file.close
 end
 
 def load_students(filename = "students.csv")
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-  name, cohort, hobbies, country = line.chomp.split(',')
-  add_students(name, cohort, hobbies, country)
-  end 
-  file.close
+  file = File.open("students.csv", "r") do |file|
+    
+    file.readlines.each do |line|
+    name, cohort, hobbies, country = line.chomp.split(',')
+    add_students(name, cohort, hobbies, country)
+    end 
+  end    
 end
 
 def try_load_students
