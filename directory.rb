@@ -29,9 +29,6 @@ case selection
         show_students
       when "3"
         save_students
-        puts 
-        puts "Your file has been saved"
-        puts 
       when "4"
         load_students
         puts
@@ -164,16 +161,22 @@ def student_finder
 end
 
 def save_students
-  puts
-  puts "What "
+  puts 'What would you like to name your file?'
+  file_name = STDIN.gets.chomp
+  
+  if file_name.empty?
+     file_name = "students.csv"
+  end
+
   # open the file for writing.
-  file = File.open("students.csv", "w") do |file|
-    @students.each do | student|
+  file = File.open(file_name, "w") do |file|
+    @students.each do |student| 
     student_data = [student[:name], student[:cohort], student[:hobbies], student[:country]]
     csv_line = student_data.join(",")
     file.puts csv_line
-    end
   end
+ end
+ puts "Your file has been saved as #{file_name}"
 end
 
 def load_students(filename = "students.csv")
@@ -182,8 +185,8 @@ def load_students(filename = "students.csv")
     file.readlines.each do |line|
     name, cohort, hobbies, country = line.chomp.split(',')
     add_students(name, cohort, hobbies, country)
-    end 
-  end    
+  end 
+ end   
 end
 
 def try_load_students
