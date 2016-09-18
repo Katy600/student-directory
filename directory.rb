@@ -6,6 +6,8 @@ def print_menu
     puts "2. Show the students"
     puts "3. Save the list to students.csv"
     puts "4. Load the list to students.csv"
+    puts "5. Select by cohort"
+    puts "6. Select student by letter"
     puts "9. Exit"
 end
 
@@ -26,6 +28,10 @@ case selection
         save_students
       when "4"
         load_students
+      when "5"
+        select_cohort
+      when "6"
+        student_finder
       when "9"
         exit #this will cause the program to terminate
       else
@@ -89,12 +95,12 @@ def input_students
 end 
 
 def show_students
-      output_header
-      output
-      output_footer
+      print_header
+      print_output
+      print_footer
 end
 
-def output_header
+def print_header
   if @students.count == 0
     puts "There are no students yet".center(100)
   else
@@ -103,19 +109,16 @@ def output_header
   end
 end
 
-def output
+def print_output
   @students.each_with_index {|student, index|
     if student[:name].length < 12
-      puts "#{index + 1}. #{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort.".center(100)
-      if student[:hobbies] != ""
-        puts "#{student[:name]} likes to #{student[:hobbies]}".center(100)
+      puts "#{index + 1}. #{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort.#{student[:name]} likes to #{student[:hobbies]}".center(100)
         puts ""
       end
-    end
-  }
+    }
 end
 
-def output_footer
+def print_footer
   if @students.count == 0
     puts "There are no students registered"
   elsif @students.count == 1
@@ -127,26 +130,24 @@ end
 
 def select_cohort
   print "what cohort would you like to select? "
-  month = STDIN.gets.chomp.downcase.to_sym
-  selected_cohort = @students.select {|student|
+  month = STDIN.gets.chomp.to_sym
+   @students.select {|student|
    if student[:cohort] == month
-      puts ""
-      puts "#{student[:name]}: #{student[:cohort]} cohort".center(100)
+      puts "#{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort.#{student[:name]} likes to #{student[:hobbies]}"
    end
-  }
-  return selected_cohort
+  } 
 end
+
 
 def student_finder
   print "What is the first letter of the student's name?: "
-  letter = STDIN.gets.chomp.downcase
+  letter = STDIN.gets.chomp.upcase
   selected_students = @students.select { |student|
     if student[:name][0] == letter
       puts ""
-      puts "#{student[:name]}: #{student[:cohort]} cohort".center(100)
+      puts "#{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort.#{student[:name]} likes to #{student[:hobbies]}"
     end
   }
-  return selected_students
 end
 
 def save_students
@@ -159,6 +160,9 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts
+  puts "Your file has been saved"
+  puts 
 end
 
 def load_students(filename = "students.csv")
@@ -187,6 +191,8 @@ end
 def add_students(name, cohort, hobbies, country)
   @students << {name: name, cohort: cohort.to_sym, hobbies: hobbies, country: country}
 end
+
+  
 
 try_load_students
 interactive_menu
