@@ -53,9 +53,26 @@ def input_students
         break
       end
 
+    puts "What cohort are they on?".center(100)
+
+    month = gets.chomp
+        if month == ""
+           month = "(no month has been entered)"
+                else
+        
+                until months.any?{|valid_month| month == valid_month} 
+
+                puts "Incorrect spell. Please try again".center(50)
+
+                month = STDIN.gets.chomp
+              end
+          end
+
+
+=begin
+
       print "What cohort should I add #{name} to?: "
       cohort = STDIN.gets.chomp
-
       if cohort == ""
          cohort = "(none listed)"
       end
@@ -67,18 +84,20 @@ def input_students
          }
       end
 
-      print "What are #{name}'s hobbies?: "
+=end
+
+      puts "What are #{name}'s hobbies?: "
       hobbies = STDIN.gets.chomp
 
       if hobbies == ""
-        hobbies= "(none listed)"
+         hobbies = "(none listed)"
       end
 
-      print "What is #{name}'s country of birth? "
+      puts "What is #{name}'s country of birth? "
       country = STDIN.gets.chomp
 
       if country == ""
-        country = "(none listed)"
+         country = "(none listed)"
       end
 
       add_students(name, cohort, hobbies, country)
@@ -92,7 +111,6 @@ def input_students
       end
     end
   end
-end 
 
 def show_students
       print_header
