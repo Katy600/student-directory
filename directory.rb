@@ -2,13 +2,14 @@
 @students = []
 
 def print_menu
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "3. Save the list to students.csv"
-    puts "4. Load the list to students.csv"
-    puts "5. Select by cohort"
-    puts "6. Select student by letter"
-    puts "9. Exit"
+
+   puts "1. Input the students"
+   puts "2. Show the students"
+   puts "3. Save the list to students.csv"
+   puts "4. Load the list to students.csv"
+   puts "5. Select by cohort"
+   puts "6. Select student by letter"
+   puts "9. Exit"
 end
 
 def interactive_menu
@@ -22,12 +23,20 @@ def process(selection)
 case selection
       when "1"
         input_students
+        puts
+        puts "To view your students go back to the main menu and press 1"
       when "2"
         show_students
       when "3"
         save_students
+        puts 
+        puts "Your file has been saved"
+        puts 
       when "4"
         load_students
+        puts
+        puts "Your load has been loaded"
+        puts
       when "5"
         select_cohort
       when "6"
@@ -49,42 +58,25 @@ def input_students
  loop do  
   puts "Add another student" 
     name = STDIN.gets[0...-1]
-      if name.empty?
-        break
-      end
+      
+      break if name.empty?
 
     puts "What cohort are they on?".center(100)
 
-    month = gets.chomp
-        if month == ""
-           month = "(no month has been entered)"
+    cohort = STDIN.gets.chomp
+        if cohort == ""
+           cohort = "(none listed)"
+                
                 else
         
-                until months.any?{|valid_month| month == valid_month} 
+                until months.any?{|valid_month| cohort == valid_month} 
 
                 puts "Incorrect spell. Please try again".center(50)
 
-                month = STDIN.gets.chomp
+                cohort = STDIN.gets.chomp
               end
           end
 
-
-=begin
-
-      print "What cohort should I add #{name} to?: "
-      cohort = STDIN.gets.chomp
-      if cohort == ""
-         cohort = "(none listed)"
-      end
-
-      if cohort != ""
-        until months.any? {|month| cohort == month 
-          puts "please enter a valid month"
-          cohort = STDIN.gets.chomp
-         }
-      end
-
-=end
 
       puts "What are #{name}'s hobbies?: "
       hobbies = STDIN.gets.chomp
@@ -130,6 +122,7 @@ end
 def print_output
   @students.each_with_index {|student, index|
     if student[:name].length < 12
+      puts 
       puts "#{index + 1}. #{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort.#{student[:name]} likes to #{student[:hobbies]}".center(100)
         puts ""
       end
@@ -151,7 +144,9 @@ def select_cohort
   month = STDIN.gets.chomp.to_sym
    @students.select {|student|
    if student[:cohort] == month
-      puts "#{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort.#{student[:name]} likes to #{student[:hobbies]}"
+      puts
+      puts "#{student[:name]} is from #{student[:country]} and registered in the #{student[:cohort]} cohort. #{student[:name]} likes to #{student[:hobbies]}"
+      puts 
    end
   } 
 end
@@ -178,9 +173,6 @@ def save_students
     file.puts csv_line
   end
   file.close
-  puts
-  puts "Your file has been saved"
-  puts 
 end
 
 def load_students(filename = "students.csv")
@@ -210,7 +202,7 @@ def add_students(name, cohort, hobbies, country)
   @students << {name: name, cohort: cohort.to_sym, hobbies: hobbies, country: country}
 end
 
-  
 
+  
 try_load_students
 interactive_menu
