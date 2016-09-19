@@ -1,4 +1,8 @@
 
+#We are de-facto using CSV format to store data. 
+#However, Ruby includes a library to work with the CSV files that we could use instead of working directly with the files. 
+#Refactor the code to use this library.
+require 'csv'
 @students = []
 
 def print_menu
@@ -32,7 +36,7 @@ case selection
       when "4"
         load_students
         puts
-        puts "Your load has been loaded"
+        puts "Your file has been loaded"
         puts
       when "5"
         select_cohort
@@ -160,34 +164,62 @@ def student_finder
   }
 end
 
+def store_students(name, cohort)
+  @students << { name: name, 
+    cohort: cohort.to_sym
+
+  }
+
+end 
+
 def save_students
   puts 'What would you like to name your file?'
-  file_name = STDIN.gets.chomp
+  filename = STDIN.gets.chomp
   
-  if file_name.empty?
-     file_name = "students.csv"
+  if filename.empty?
+     filename = "students.csv"
   end
 
   # open the file for writing.
-  file = File.open(file_name, "w") do |file|
+  file = CSV.open(filename, "w") do |csv|
     @students.each do |student| 
     student_data = [student[:name], student[:cohort], student[:hobbies], student[:country]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    csv << student_data
   end
- end
- puts "Your file has been saved as #{file_name}"
+  end
+ puts "Your file has been saved as #{filename}"
 end
 
+
 def load_students(filename = "students.csv")
-  file = File.open("students.csv", "r") do |file|
-    
-    file.readlines.each do |line|
-    name, cohort, hobbies, country = line.chomp.split(',')
-    add_students(name, cohort, hobbies, country)
+  #file = CSV.open(filename, "r") do |file|
+   CSV.foreach(filename) do |line|
+    name, cohort = line
+      store_students(name, cohort)
   end 
- end   
+end 
+  #file.readlines.each {|line|
+  #name, cohort, hobbies, country = line.chomp.split(",")
+  
+    #add_students(name, cohort, hobbies, country)
+
+
+
+
+=begin
+def load_students(filename = "students.csv")
+  file = CSV.open(filename, "r") do |file|
+    
+    CSV.read(file) do |row|
+      puts row
+    end 
+
+    #file.readlines.each do |line|
+    #name, cohort, hobbies, country = line.chomp.split(',')
+    add_students(name, cohort, hobbies, country) 
+  end    
 end
+=end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
@@ -209,5 +241,5 @@ end
 
 
   
-try_load_students
+#try_load_students
 interactive_menu
